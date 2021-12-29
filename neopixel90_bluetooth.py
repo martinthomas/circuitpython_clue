@@ -20,9 +20,9 @@ advertisement = ProvideServicesAdvertisement(uart_service)
 
 pixel_pin = board.A2
 num_pixels = 90
-pixel_pause = 15e-3 # 10ms
+pixel_pause = 15e-3 * 100/num_pixels# 10ms
 
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=False)
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.35, auto_write=False)
 
 def color_chase(color, wait):
     for i in range(num_pixels):
@@ -75,11 +75,9 @@ MINT = fancy.CRGB(127, 255, 127).pack()
 ROBIN = fancy.CRGB(127, 127, 255).pack()
 CANARY = fancy.CRGB(255, 255, 127).pack()
 
-print("Green", GREEN)
-print (dir(GREEN))
-chaser = [INDIGO, VIOLET, YELLOW, ORANGE, RED]
+chaser = [INDIGO, VIOLET, CYAN, CANARY, YELLOW, ORANGE, RED]
 
-my_fns = [color_chase(GREEN, pixel_pause), poly_chase(chaser, 3, 300, pixel_pause),
+my_fns = [color_chase(GREEN, pixel_pause), poly_chase(chaser, num_pixels//33, 300, pixel_pause),
 color_chase(BLUE, pixel_pause), color_chase(RED, pixel_pause)]
 
 while True:
@@ -95,6 +93,7 @@ while True:
             if isinstance(packet, ColorPacket):
                 print(packet.color)
                 pixels.fill(packet.color)
+                pixels.show()
             elif isinstance(packet, ButtonPacket) and packet.pressed:
                 if packet.button == ButtonPacket.UP:
                     print("Button UP")
@@ -104,15 +103,24 @@ while True:
                     color_chase(BLUE, pixel_pause)
                 if packet.button == ButtonPacket.LEFT:
                     print("Button LEFT")
-                    pixels.fill(GREEN)
+                    rainbow_cycle(25)
                 if packet.button == ButtonPacket.RIGHT:
                     print("Button RIGHT")
+                    pixels.fill(BLACK)
+                    pixels.show()
                 if packet.button == ButtonPacket.BUTTON_1:
                     print("Button 1")
-
+                    pixels.fill(GREEN)
+                    pixels.show()
                 if packet.button == ButtonPacket.BUTTON_2:
                     print("Button 2")
+                    pixels.fill(RED)
+                    pixels.show()
                 if packet.button == ButtonPacket.BUTTON_3:
                     print("Button 3")
+                    pixels.fill(BLUE)
+                    pixels.show()
                 if packet.button == ButtonPacket.BUTTON_4:
                     print("Button 4")
+                    pixels.fill(WHITE)
+                    pixels.show()

@@ -9,7 +9,7 @@ pixel_pin = board.A2
 num_pixels = 90
 pixel_pause = 15e-3 # 10ms
 
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=False)
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=True)
 
 def color_chase(color, wait):
     for i in range(num_pixels):
